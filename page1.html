@@ -79,11 +79,10 @@
         </table>
         <button id="add-row">Add Player</button>
         <button id="sort-button">Sort Players(By Average)</button>
+        <button id="save-button">Save Data</button>
     </div>
 
     <script>
-        
-
         let toggled = false;
         let toggleButton = document.querySelector(".toggle-button");
         toggleButton.addEventListener("click", () => {
@@ -92,7 +91,7 @@
 
         let rows = [{
             rowNumber: 0,
-            pinnieNumber: 33,
+            pinnieNumber: 1,
             drill: {
                 "#1": 1,
                 "#2": 1,
@@ -125,10 +124,8 @@
                             <input type="number" id="${rowNumber}-drill-${drillNumber}" onchange="calcAndUpdate(${i}, 'drill-${drillNumber}')" value="${drillValue}" min="1" max="4" step="0.5">
                         </td>`;
                 }).join("");
-
                
                 newRow += newTD;
-
                 
                 newRow += `
                     <td id="${rowNumber}-comments-td">
@@ -138,7 +135,6 @@
                         ${rows[i].average.toFixed(2)}
                     </td>
                     </tr>`;
-
                
                 table.insertAdjacentHTML("beforeend", newRow);
             }
@@ -202,8 +198,8 @@
         sortRows.addEventListener("click", ()=> {
             rows.sort((a, b) => b.average - a.average);
             rows.forEach((row, index) => {
-        row.rowNumber = index;
-    });
+                row.rowNumber = index;
+            });
             render();
         });
     
@@ -212,6 +208,30 @@
     info.addEventListener("click", () => {
         pdf.classList.toggle("present");
             
+    });
+
+    let saveButton = document.getElementById("save-button");
+    saveButton.addEventListener("click", () => {
+        // let data = {
+        //     evaluatorNames: document.getElementById("evaluator-name").value,
+        //     ageGroup: document.getElementById("age-select").value,
+        //     players: rows
+        // };
+
+        // fetch("https://script.google.com/macros/library/d/1sIk_eUdOYUNgHqU1JzY6VfaX7FoUaSn0rqxa4LR8foAB_9CPMeIY9POu/1", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(data)
+        // })
+        // .then(response => response.text())
+        // .then(responseText => {
+        //     alert(responseText);
+        // })
+        // .catch(error => {
+        //     console.error("Error:", error);
+        // });
     });
 
         render();
