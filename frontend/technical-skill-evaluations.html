@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Skill Evaluation</title>
+    <link href="styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+</head>
+<body>
+    <h1>Technical Skill Evaluation</h1>
+    <i class="fas fa-info-circle" id="info-button"></i>
+    <div id="pdf-info" style="display: none">
+        <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="90%">
+    </div>
+    <div class="container">
+        <label for="evaluator-names">
+            Enter the Evaluator Names:
+            <input name="evaluator-names" id="evaluator-name" placeholder="e.g. Glen Carnahan, Brad Laing">
+        </label>
+
+        <label for="age-group">Select Tryout Age Group:
+            <select name="age-group" id="age-select">
+                <option value="B34">B34</option>
+                <option value="B56">G34</option>
+                <option value="B34">B56</option>
+                <option value="B34">G56</option>
+                <option value="B34">B78</option>
+                <option value="B34">G78</option>
+            </select>
+        </label>
+
+        <div class="new-container">
+            <h3>Session #1</h3>
+            <div class="toggle-button">
+                <button class="thumb"></button>
+            </div>
+            <h3>Session #2</h3>
+        </div>
+
+        <p>Key: Score based on Scale of 1 to 4
+            <br>4 = Highest Score (executes skills at highest level and consistently)
+            <br>1 = Lowest Score (executes skills at low level and inconsistently or unable)
+            <br>Note: The average will be calculated for you manually! Don't worry about calculating it!
+        </p>
+        <table style="width:100%" id="technical-evaluation-table">
+            <thead>
+                <tr>
+                    <th style="width: 10%">Player #</th>
+                    <th style="width: 5%">Shuttle Cone Dribbling</th>
+                    <th style="width: 8%">6-Cone Dribbling</th>
+                    <th style="width: 8%">Passing</th>
+                    <th style="width: 8%">Receiving</th>
+                    <th style="width: 8%">1v1 Off.</th>
+                    <th style="width: 8%">1v1 Def.</th>
+                    <th>Comments</th>
+                    <th>Average</th>
+                </tr>
+                <tr id="example">
+                    <td>Example: 23</td>
+                    <td>3.5</td>
+                    <td>3</td>
+                    <td>2</td>
+                    <td>2.5</td>
+                    <td>3</td>
+                    <td>4</td>
+                    <td>Strong technical skills, but sometimes lacks consistency</td>
+                    <td>3.00</td>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button id="add-row">Add Player</button>
+        <button id="sort-button">Sort Players(By Average)</button>
+        <button id="submit-button-first" class="btn">Submit Data</button>
+        <dialog id="confirm-modal" class="modal">
+            <div>
+                <h2>An interesting title</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, tempora.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, culpa.</p>
+                <div>
+                    <button id="submit-button-second">Submit</button>
+                    <button id="close">Close</button>
+                </div>
+            </div>
+        </dialog>
+    </div>
+
+    <script>
+        let session = true;
+        let toggleButton = document.querySelector(".toggle-button");
+        toggleButton.addEventListener("click", () => {
+            toggleButton.classList.toggle("toggled");
+            session = !session;
+        });
+
+        let rows = [];
+
+        const render = () => {
+            let table = document.querySelector("#technical-evaluation-table tbody");
+            table.innerHTML = ""; 
+
+            for (let i = 0; i < rows.length; i++) {
+                let rowNumber = `row-${rows[i].rowNumber}`;
+                let newRow = `
+                    <tr id="${rowNumber}" class="row">
+                        <td id="${rowNumber}-pinnieNumber-td">
+                            <input type="text" id="${rowNumber}-pinnieNumber" onchange="calcAndUpdate(${i}, 'pinnieNumber')" value="${rows[i].pinnieNumber}">
+                        </td>`;
+
+                let drillEntries = Object.entries(rows[i].drill);
+                const newTD = drillEntries.map(([drillNumber, drillValue], index) => {
+                    return `
+                        <td id="${rowNumber}-drill-${index}-td">
+                            <input type="number" id="${rowNumber}-drill-${drillNumber}" onchange="calcAndUpdate(${i}, 'drill-${drillNumber}')" value="${drillValue}" min="1" max="4" step="0.5">
+                        </td>`;
+                }).join("");
+               
+                newRow += newTD;
+                
+                newRow += `
+                    <td id="${rowNumber}-comments-td">
+                        <input type="text" id="${rowNumber}-comments" value="${rows[i].comments}" onchange="calcAndUpdate(${i}, 'comments')">
+                    </td>
+                    <td id="${rowNumber}-average">
+                        ${rows[i].average.toFixed(2)}
+                    </td>
+                </tr>`;
+               
+                table.insertAdjacentHTML("beforeend", newRow);
+            }
+        };
+
+        const calcAndUpdate = (rowIndex, content) => {
+            let inputElement = document.getElementById(`row-${rowIndex}-${content}`);
+            let value = inputElement.value;
+
+            if (content.startsWith("drill")) {
+                value = parseFloat(value);
+                if (value < 1 || value > 4) {
+                    alert("Please enter a value between 1 and 4.");
+                    inputElement.value = rows[rowIndex].drill[`${content.split("-")[1]}`];
+                    return;
+                }
+                rows[rowIndex].drill[`${content.split("-")[1]}`] = value;
+            } else {
+                rows[rowIndex][content] = value;
+            }
+
+            let drillArr = Object.entries(rows[rowIndex].drill);
+            let nonZero = 0;
+            let sum = 0.0;
+            drillArr.forEach(([key, value]) => {
+                if (value > 0.5) {
+                    nonZero += 1;
+                    sum += value;
+                }
+            });
+
+            let average = nonZero > 0 ? sum / nonZero : 0;
+            rows[rowIndex].average = average;
+            document.getElementById(`row-${rowIndex}-average`).textContent = average.toFixed(2);
+        };
+
+        const addPlayer = () => {
+            rows.push({
+                rowNumber: rows.length,
+                pinnieNumber: 0,
+                drill: {
+                    "#1": 0,
+                    "#2": 0,
+                    "#3": 0,
+                    "#4": 0,
+                    "#5": 0,
+                    "#6": 0,
+                },
+                comments: "",
+                average: 0.00
+            });
+        };
+
+        document.getElementById("add-row").addEventListener("click", () => {
+            addPlayer();
+            render();
+        });
+
+        document.getElementById("sort-button").addEventListener("click", () => {
+            rows.sort((a, b) => b.average - a.average);
+            rows.forEach((row, index) => {
+                row.rowNumber = index;
+            });
+            render();
+        });
+
+        document.getElementById("info-button").addEventListener("click", () => {
+            document.getElementById("pdf-info").classList.toggle("present");
+        });
+
+        const openDialog = document.getElementById("submit-button-first");
+        const dialog = document.getElementById("confirm-modal");
+        const close = document.getElementById("close");
+        const submit = document.getElementById("submit-button-second");
+
+        openDialog.addEventListener("click", () => {
+            dialog.showModal();
+        });
+
+        close.addEventListener("click", () => {
+            dialog.close();
+        });
+
+        submit.addEventListener("click", () => {
+            let evaluatorNames = encodeURIComponent(document.getElementById("evaluator-name").value);
+            let ageGroup = encodeURIComponent(document.getElementById("age-select").value);
+            let sessionValue = session ? "1" : "2";
+
+            let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
+            window.location.assign(url);
+        });
+
+        dialog.addEventListener("click", (e) => {
+            const dimensions = dialog.getBoundingClientRect();
+            if (e.clientX < dimensions.left || e.clientX > dimensions.right || e.clientY < dimensions.top || e.clientY > dimensions.bottom) {
+                dialog.close();
+            }
+        });
+
+        render();
+    </script>
+</body>
+</html>
