@@ -1,0 +1,83 @@
+
+
+:root {
+  --littleton-blue: #002147; 
+  --littleton-yellow: #FFC72C; 
+  --toggle-width: 50px;
+  --toggle-height: 28px;
+  --thumb-size: 20px;
+}
+
+
+#pdf-info {
+  display: none;
+  
+}
+
+#pdf-info.present {
+  display: block;
+  position: absolute;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+}
+
+
+.toggle-button {
+  background-color: var(--littleton-blue);
+  border: 1px solid #aaa;
+  border-radius: 99px;
+  width: var(--toggle-width);
+  height: var(--toggle-height);
+  transition: background-color 0.1s ease, border-color 0.2s ease;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px rgb(0, 0, 0, 0.748);
+  position: relative;
+}
+
+.toggle-button .thumb {
+  width: var(--thumb-size);
+  height: var(--thumb-size);
+  background-color: #fff;
+  border-radius: 99px;
+  transform: translateX(0);
+  transition: left 0.15s ease;
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.toggle-button.toggled {
+  background-color: var(--littleton-yellow);
+}
+
+.toggle-button.toggled .thumb {
+  left: calc(var(--toggle-width) - var(--thumb-size) - 6px);
+}
+
+.new-container {
+  
+}
+
+.new-container h3 {
+  padding: 5px;
+}
+
+.new-container div {
+  margin-top: 18px;
+}
+
+/**
+CSS is terribe so far lol
+*/
+
+*/
+
+
+tbody {
+    border: 2px solid green;
+}
+tr {
+    border: 2px solid black !important!;
+}

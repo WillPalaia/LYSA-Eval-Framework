@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Sortable Test</title>
+    <style>
+        .handle {
+            cursor: pointer;
+            background-color: #ccc; /* Gray background for visibility */
+            padding: 10px; /* Padding for easier handling */
+        }
+        td {
+            border: 1px solid black; /* Added border for better visibility */
+        }
+    </style>
+</head>
+<body>
+    <table id="simple-sortable-table">
+        <thead>
+            <tr>
+                <th>Player #</th>
+                <th>Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Player 1</td>
+                <td class="handle">Drag</td>
+            </tr>
+            <tr>
+                <td>Player 2</td>
+                <td class="handle">Drag</td>
+            </tr>
+            <tr>
+                <td>Player 3</td>
+                <td class="handle">Drag</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/dist/sortable.umd.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const tbody = document.querySelector('#simple-sortable-table tbody');
+
+            // Initialize Sortable
+            new Sortable(tbody, {
+                handle: '.handle', // Use the handle to drag rows
+                animation: 150,
+                onEnd: function(evt) {
+                    console.log('Element was moved:', evt.item); // Log moved item
+                }
+            });
+        });
+    </script>
+</body>
+</html>
