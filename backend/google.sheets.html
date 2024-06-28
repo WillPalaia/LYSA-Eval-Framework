@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Skill Evaluation</title>
+    <link href="styles.css" rel="stylesheet">
+  
+    <style>
+        .container {
+            margin: 20px;
+        }
+        .slider-container {
+            display: flex;
+            align-items: center;
+        }
+        .slider-value {
+            margin-left: 10px;
+        }
+        .handle {
+            cursor: move;
+        }
+        .big-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-right: 0px;
+        }
+        #ranking-table {
+            width: 15%;
+        }
+        th, td {
+            height: 40px; 
+            text-align: center;
+        }
+        #technical-evaluation-table {
+            width: 85%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Final Player Evaluation</h1>
+    <i class="fas fa-info-circle" id="info-button"></i>
+    <div id="pdf-info" style="display:none">
+        <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="90%">
+    </div>
+    <div class="container">
+        <label for="field-number">
+            Enter the Field Number:
+            <input name="field-number" id="field-number" placeholder="Field Number">
+        </label>
+        <p>Key: Score based on Scale of 1 to 10
+            <br>10 = Highest Score (executes skills at highest level and consistently)
+            <br>1 = Lowest Score (executes skills at low level and inconsistently or unable)
+            <br>Note: The average will be calculated for you manually! Don't worry about calculating it!
+        </p>
+        <label for="player-numbers">Add all player numbers, separated by commas:</label>
+        <input type="text" id="player-numbers" name="player-numbers" placeholder="Add all player numbers, separated by commas">
+        <button id="add-players-button">Add Players</button>
+        <div class="big-container">
+            <table id="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Ranking</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+            <table id="technical-evaluation-table">
+                <thead>
+                    <tr>
+                        <th>Player #</th>
+                        <th>Technical</th>
+                        <th>Tactical</th>
+                        <th>Effort</th>
+                        <th>Comments</th>
+                        <th>Avg.</th>
+                        <th>Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
+        <button id="submit-button-first" class="btn">Submit Data</button>
+        <dialog id="confirm-modal" class="modal">
+            <div>
+                <h2>An interesting title</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, tempora.</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, culpa.</p>
+                <div>
+                    <button id="submit-button-second">Submit</button>
+                    <button id="close">Close</button>
+                </div>
+            </div>
+        </dialog>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script>
+        let evaluatorNames;
+        let ageGroup;
+        let session;
+    
+        const getUrlParams = () => {
+            const searchParams = new URLSearchParams(window.location.search);
+            evaluatorNames = searchParams.get('evaluatorNames');
+            ageGroup = searchParams.get('ageGroup');
+            session = searchParams.get('session');
+        };
+        getUrlParams();
+
+        const openDialog = document.getElementById("submit-button-first");
+        const dialog = document.getElementById("confirm-modal");
+        const close = document.getElementById("close");
+        const submit = document.getElementById("submit-button-second");
+        
+        openDialog.addEventListener("click", () => {
+            dialog.showModal();
+        });
+        close.addEventListener("click", () => {
+            dialog.close();
+        });
+
+        dialog.addEventListener("click", e => {
+            const dimensions = dialog.getBoundingClientRect();
+            (e.clientX < dimensions.left || 
+            e.clientX > dimensions.right || 
+            e.clientY < dimensions.top || 
+            e.clientY > dimensions.bottom) 
+            ? dialog.close() 
+            : null;
+        });
+
+        submit.addEventListener("click", () => {
+  let allPromises = [];
+
+  console.log("All Players:", allPlayers); 
+
+  allPlayers.forEach(player => {
+    let fetchPromise = fetch("https://script.google.com/macros/s/AKfycbzESE5L0_UNV91qbQGmwEUQplobqO0poXcbXtDElTsX3VvADWcbEsbRP23gi_Mcuyo/exec", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'text/plain'
+      },
+      body: JSON.stringify({
+        pinnieNumber: player.pinnieNumber,
+        technical: player.stat.technical,
+        tactical: player.stat.tactical,
+        effort: player.stat.effort,
+        comments: player.comments,
+        average: player.average
+      })
+    })
+    .then(res => {
+      if (!res.ok) {
+        return res.json().then(errorData => {
+          throw new Error(`Error: ${errorData.message || res.statusText}`);
+        });
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data.result !== 'success') {
+        throw new Error(`Error: ${data.message || 'Unknown error'}`);
+      }
+      console.log('Success:', data);
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      throw error;
+    });
+
+    allPromises.push(fetchPromise);
+  });
+
+  Promise.all(allPromises)
+    .then(responses => {
+      window.location.assign('./final-page.html');
+    })
+    .catch(error => {
+      console.log("Error with uploading data to spreadsheet:", error);
+      
+    });
+});
+
+
+
+        const infoButton = document.getElementById("info-button");
+        const pdfInfo = document.getElementById("pdf-info");
+
+        infoButton.addEventListener("click", () => {
+            pdfInfo.classList.toggle("present");
+        });
+
+        let allPlayers = [];
+
+        document.getElementById("add-players-button").addEventListener("click", processPlayerNumbers);
+
+        function processPlayerNumbers() {
+            let input = document.getElementById("player-numbers").value;
+            let players = input.split(',').map(num => num.trim()).filter(num => num !== '');
+
+            players.forEach(pinnieNumber => {
+                if (allPlayers.findIndex(player => player.pinnieNumber === pinnieNumber) === -1) {
+                    allPlayers.push({
+                        pinnieNumber: pinnieNumber,
+                        stat: {
+                            technical: 5,
+                            tactical: 5,
+                            effort: 5,
+                        },
+                        comments: "",
+                        average: 5.00,
+                        rank: allPlayers.length + 1 
+                    });
+                }
+            });
+            allPlayers = allPlayers.filter(player => players.includes(player.pinnieNumber));
+            renderPlayersTable();
+        }
+
+        function renderPlayersTable() {
+            let table = document.querySelector("#technical-evaluation-table tbody");
+            table.innerHTML = "";
+            let rankingTable = document.querySelector("#ranking-table tbody");
+            rankingTable.innerHTML = "";
+            allPlayers.forEach((player, index) => {
+                let rankingRow = `<tr>
+                    <td>
+                    ${index + 1}
+                    </td>
+                    </tr>`;
+                let newRow = `
+                    <tr id="player-${player.pinnieNumber}" class="row">
+                        <td id="player-${player.pinnieNumber}-td">${player.pinnieNumber}</td>
+                        ${playerStats(player.pinnieNumber)}
+                        <td id="player-${player.pinnieNumber}-comments-td">
+                            <input type="text" id="comments-${player.pinnieNumber}" value="${player.comments}" onchange="updateComments('${player.pinnieNumber}')">
+                        </td>
+                        <td id="player-${player.pinnieNumber}-average">
+                            ${player.average.toFixed(2)}
+                        </td>
+                        <td class="handle">☰</td>
+                    </tr>`;
+                
+                table.innerHTML += newRow;
+                rankingTable.innerHTML += rankingRow;
+            });
+
+            new Sortable(table, {
+                handle: '.handle',
+                animation: 150,
+                onEnd: function(evt) {
+                    updateRanks();
+                }
+            });
+        }
+
+        function updateRanks() {
+            console.log("hi");
+            console.log(allPlayers);
+            const parentElement = document.querySelector("#technical-evaluation-table tbody");
+            const childElements = Array.from(parentElement.children); 
+            /**
+             * Because you can't traverse through just a plain array
+             **/
+
+            childElements.forEach((child, i) => { 
+                const pinnieNumber = child.id.substring(7); 
+                let playerIndex = allPlayers.findIndex(player => String(player.pinnieNumber) === pinnieNumber);
+                if (playerIndex !== -1) {
+                    allPlayers[playerIndex].rank = i + 1; 
+                }
+            });
+            console.log(allPlayers);
+            allPlayers.sort((a, b) => a.rank - b.rank); 
+            console.log(allPlayers);
+        }
+
+        function updateComments(pinnieNumber) {
+            let input = document.getElementById(`comments-${pinnieNumber}`);
+            let playerIndex = allPlayers.findIndex(player => player.pinnieNumber === String(pinnieNumber));
+            if (playerIndex !== -1) {
+                allPlayers[playerIndex].comments = input.value;
+            }
+        }
+
+        function updateSlider(pinnieNumber, key, value) {
+            let span = document.getElementById(`player-${pinnieNumber}-${key}-value`);
+            span.textContent = value;
+            let playerIndex = allPlayers.findIndex(player => player.pinnieNumber === String(pinnieNumber));
+            if (playerIndex !== -1) {
+                allPlayers[playerIndex].stat[key] = parseFloat(value);
+                updateAverage(pinnieNumber);
+            }
+        }
+
+        function playerStats(playerNumber) {
+            const index = allPlayers.findIndex(player => player.pinnieNumber === String(playerNumber));
+
+            if (index !== -1) {
+                const player = allPlayers[index];
+                const keys = Object.keys(player.stat);
+                let answer = "";
+
+                keys.forEach(key => {
+                    const value = player.stat[key];
+                    answer += `
+                        <td id="player-${player.pinnieNumber}-${key}">
+                            <div class="slider-container">
+                                <input type="range" min="1" max="10" value="${value}" class="slider" id="player-${player.pinnieNumber}-${key}" oninput="updateSlider('${player.pinnieNumber}', '${key}', this.value)">
+                                <span class="slider-value" id="player-${player.pinnieNumber}-${key}-value">${value}</span>
+                            </div>
+                        </td>`;
+                });
+
+                return answer;
+            }
+            return "";
+        }
+
+        function updateAverage(pinnieNumber) {
+            const playerIndex = allPlayers.findIndex(player => player.pinnieNumber === String(pinnieNumber));
+            if (playerIndex !== -1) {
+                const player = allPlayers[playerIndex];
+                const stats = Object.values(player.stat);
+                let sum = 0;
+                for (let i = 0; i < stats.length; i++) {
+                    sum += parseFloat(stats[i]);
+                }
+                const average = sum / stats.length;
+                player.average = average;
+                document.getElementById(`player-${pinnieNumber}-average`).textContent = average.toFixed(2);
+            }
+        }
+    </script>
+</body>
+</html>
