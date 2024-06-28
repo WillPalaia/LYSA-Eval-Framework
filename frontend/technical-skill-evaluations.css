@@ -56,10 +56,6 @@
   left: calc(var(--toggle-width) - var(--thumb-size) - 6px);
 }
 
-.new-container {
-  
-}
-
 .new-container h3 {
   padding: 5px;
 }
@@ -79,5 +75,5 @@ tbody {
     border: 2px solid green;
 }
 tr {
-    border: 2px solid black !important!;
+    border: 2px solid black !important;
 }
