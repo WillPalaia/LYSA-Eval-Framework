@@ -44,7 +44,7 @@
 
     .radio-buttons {
         justify-content: space-around;
-        align-items: center; /* Ensure radio buttons are centered vertically */
+        align-items: center; 
         height: 100%;
     }
 
@@ -69,7 +69,7 @@
     }
 
     .add-buttons button {
-        margin-left: 10px; /* Adjust as needed */
+        margin-left: 10px; 
     }
 
     table {
@@ -93,7 +93,7 @@
         width: 100%;
         max-height: 100px;
         object-fit: contain;
-        background: transparent; /* Ensure background is transparent */
+        background: transparent; 
     }
 
     h1 {
@@ -103,7 +103,7 @@
     footer {
         text-align: center;
         padding: 10px;
-        margin-top: 20px; /* Ensure gap between content and footer */
+        margin-top: 20px; 
         flex-shrink: 0;
     }
 
@@ -182,10 +182,7 @@
             dialog.close();
         });
 
-        submit.addEventListener("click", () => {
-            let url = `./final-player-evaluations.html?evaluatorNames=${encodeURIComponent(evaluatorNames)}&ageGroup=${encodeURIComponent(ageGroup)}&session=${encodeURIComponent(session)}`;
-            window.location.assign(url);
-        });
+        
 
         dialog.addEventListener("click", (e) => {
             const dimensions = dialog.getBoundingClientRect();
@@ -227,6 +224,38 @@
             document.getElementById("evaluation-groups").appendChild(groupContainer);
             currentRound++;
         }
+
+
+        submit.addEventListener("click", () => {
+            const url = 'https://script.google.com/macros/s/AKfycbyCVPm71Wo9OaLiYgbvHhq3gJFwq1CutkzB5f0J0wKlS5pOT6MDKkQfUa2qHY5D7g/exec';
+
+            const data = {
+                players: allPlayers,
+                field: document.getElementById('field-number').value || 10,
+                sessionNum: session || 1,
+                ageGroup: ageGroup || "B34"
+            };
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                
+                let redirectUrl = `./final-player-evaluations.html?evaluatorNames=${encodeURIComponent(evaluatorNames)}&ageGroup=${encodeURIComponent(ageGroup)}&session=${encodeURIComponent(session)}`;
+                window.location.assign(redirectUrl);
+                
+            
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
 
         function addPlayers(roundNumber) {
             let input = document.getElementById(`player-numbers-${roundNumber}`).value;
