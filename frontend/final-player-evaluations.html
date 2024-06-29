@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Technical Skill Evaluation</title>
+    <link href="technical-skill-evaluations.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    <title>Final Player Evaluation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
     <link href="styles.css" rel="stylesheet">
-  
     <style>
         .container {
             margin: 20px;
@@ -36,6 +38,30 @@
         #technical-evaluation-table {
             width: 85%;
         }
+
+        .image-container {
+            text-align: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            background: transparent; /* Ensure background is transparent */
+        }
+        #info-button {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .present {
+            display: block !important;
+        }
+
+        #pdf-info {
+            display: none;
+        }
+
     </style>
 </head>
 <body>
@@ -49,7 +75,7 @@
             Enter the Field Number:
             <input name="field-number" id="field-number" placeholder="Field Number">
         </label>
-        <p>Key: Score based on Scale of 1 to 10
+        <p><strong>Key: Score based on Scale of 1 to 10</strong>
             <br>10 = Highest Score (executes skills at highest level and consistently)
             <br>1 = Lowest Score (executes skills at low level and inconsistently or unable)
             <br>Note: The average will be calculated for you manually! Don't worry about calculating it!
@@ -88,9 +114,8 @@
         <button id="submit-button-first" class="btn">Submit Data</button>
         <dialog id="confirm-modal" class="modal">
             <div>
-                <h2>An interesting title</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, tempora.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, culpa.</p>
+                <h2>Confirm Submission</h2>
+                <p>Please confirm you want to submit the data.</p>
                 <div>
                     <button id="submit-button-second">Submit</button>
                     <button id="close">Close</button>
@@ -287,5 +312,10 @@
             }
         }
     </script>
+    <footer>
+        <div class="image-container">
+            <img src="file.png" alt="Littleton Soccer Logo">
+        </div>
+    </footer>
 </body>
 </html>

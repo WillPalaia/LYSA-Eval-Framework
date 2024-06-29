@@ -5,24 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="technical-skill-evaluations.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-    <title>Player Evaluation</title>
+    <title>Group Evaluation</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="styles.css" rel="stylesheet">
     <style>
         .container {
-            margin-left: 20px;
+            margin: 20px;
         }
         .handle {
             cursor: pointer;
             background-color: #ccc;
             padding: 10px;
         }
-        td {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td, th {
             border: 1px solid black;
+            padding: 10px;
+            vertical-align: middle;
         }
         .radio-buttons {
-            display: flex;
             justify-content: space-around;
+            align-items: center; /* Ensure radio buttons are centered vertically */
+            height: 100%;
         }
+
+        #info-button {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .present {
+            display: block !important;
+        }
+
+        #pdf-info {
+            display: none;
+        }
+
+        .add-buttons {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .add-buttons button {
+            margin-left: 10px; /* Adjust as needed */
+        }
+
+        table {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
+
+        #submit-button-first {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            margin-left: 20px;
+            width: auto;
+        }
+        
+        .image-container {
+            text-align: center;
+        }
+
+        .image-container img {
+            width: 100%; 
+            max-height: 200px;
+            object-fit: contain;
+            background: transparent; /* Ensure background is transparent */
+        }
+
+
     </style>
 </head>
 <body>
@@ -36,13 +94,7 @@
         <label for="field-number">Enter the Field Number:</label>
         <input id="field-number" placeholder="Field Number">
         
-        <p>Key: Score based on Scale of 1 to 10
-            <br>10 = Highest Score
-            <br>1 = Lowest Score
-            <br>Note: The average will be manually calculated.
-        </p>
-        
-        <h1>Small Sided Game Evaluation</h1>
+        <h2>Small Sided Game Evaluation</h2>
         <ol>
             <li>Record the pinnie numbers for each player as your field.</li>
             <li>During play, make any notes and look to identify top, middle, and bottom performers (based on skill level).</li>
@@ -57,7 +109,6 @@
             <li><strong>Attitude:</strong> Coachability, positive behavior, sportsmanship, being a good teammate</li>
         </ul>
         <div id="evaluation-groups"></div>
-        <button onclick="addNewGroup()">Add Another Evaluation Group</button>
     </div>
 
     <button id="submit-button-first" class="btn">Submit Data</button>
@@ -120,24 +171,30 @@
         function addNewGroup() {
             let groupContainer = document.createElement("div");
             groupContainer.innerHTML = `
-                <h1>Round ${currentRound + 1}</h1>
-                <input type="text" id="player-numbers-${currentRound}" placeholder="Add player numbers, separated by commas">
-                <button onclick="addPlayers(${currentRound})">Add Players</button>
+                <h2>Round ${currentRound + 1}</h2>
+                <div>
+                    <label for="player-numbers-${currentRound}">Enter Player Numbers:</label>
+                    <input type="text" id="player-numbers-${currentRound}" placeholder="Add player numbers, separated by commas">
+                    <button onclick="addPlayers(${currentRound})">Add Players</button>
+                </div>
                 <table style="width:100%">
                     <thead>
                         <tr>
                             <th style="width: 20%">Player Number</th>
-                            <th style="width: 50%">Comments</th>
                             <th style="width: 20%">Category</th>
+                            <th style="width: 50%">Comments</th>
                             <th style="width: 10%">Move</th>
                         </tr>
                     </thead>
                     <tbody id="stats-table-${currentRound}"></tbody>
                 </table>
+                <button onclick="addNewGroup()">Add Another Evaluation Group</button>
             `;
             document.getElementById("evaluation-groups").appendChild(groupContainer);
             currentRound++;
         }
+
+
 
         function addPlayers(roundNumber) {
             let input = document.getElementById(`player-numbers-${roundNumber}`).value;
@@ -168,9 +225,6 @@
                 evalGroup.innerHTML += `
                     <tr id="player-${player.pinnieNumber}-${roundNumber}">
                         <td>${player.pinnieNumber}</td>
-                        <td>
-                            <input type="text" value="${player.comments}" onchange="updateComments('${player.pinnieNumber}', this.value, ${roundNumber})">
-                        </td>
                         <td class="radio-buttons">
                             <label>
                                 <input type="radio" name="category-${player.pinnieNumber}-${roundNumber}" value="Top" ${isCheckedTop} onchange="updateCategory('${player.pinnieNumber}', 'Top', ${roundNumber})"> Top
@@ -181,6 +235,9 @@
                             <label>
                                 <input type="radio" name="category-${player.pinnieNumber}-${roundNumber}" value="Bottom" ${isCheckedBottom} onchange="updateCategory('${player.pinnieNumber}', 'Bottom', ${roundNumber})"> Bottom
                             </label>
+                        </td>
+                        <td>
+                            <input type="text"  style="width: 100%" value="${player.comments}" onchange="updateComments('${player.pinnieNumber}', this.value, ${roundNumber})">
                         </td>
                         <td class="handle">::</td>
                     </tr>
@@ -209,5 +266,10 @@
 
         addNewGroup();
     </script>
+    <footer>
+        <div class="image-container">
+            <img src="file.png" alt="Littleton Soccer Logo">
+        </div>
+    </footer>
 </body>
 </html>

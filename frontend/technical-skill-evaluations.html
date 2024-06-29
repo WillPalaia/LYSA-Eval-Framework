@@ -3,9 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="technical-skill-evaluations.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
     <title>Technical Skill Evaluation</title>
-    <link href="styles.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link href="styles.css" rel="stylesheet">
+    <Style>
+        .image-container {
+            text-align: center;
+        }
+
+        .image-container img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            background: transparent; /* Ensure background is transparent */
+        }
+        .container {
+            margin: 20px;
+        }
+        #info-button {
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .present {
+            display: block !important;
+        }
+
+        #pdf-info {
+            display: none;
+        }
+    </Style>
 </head>
 <body>
     <h1>Technical Skill Evaluation</h1>
@@ -18,18 +47,20 @@
             Enter the Evaluator Names:
             <input name="evaluator-names" id="evaluator-name" placeholder="e.g. Glen Carnahan, Brad Laing">
         </label>
-
-        <label for="age-group">Select Tryout Age Group:
-            <select name="age-group" id="age-select">
-                <option value="B34">B34</option>
-                <option value="B56">G34</option>
-                <option value="B34">B56</option>
-                <option value="B34">G56</option>
-                <option value="B34">B78</option>
-                <option value="B34">G78</option>
-            </select>
-        </label>
-
+    </div>
+        <div class="container">
+            <label for="age-group">Select Tryout Age Group:
+                <select name="age-group" id="age-select">
+                    <option value="B34">B34</option>
+                    <option value="B56">G34</option>
+                    <option value="B34">B56</option>
+                    <option value="B34">G56</option>
+                    <option value="B34">B78</option>
+                    <option value="B34">G78</option>
+                </select>
+            </label>
+        </div>
+    <div>
         <div class="new-container">
             <h3>Session #1</h3>
             <div class="toggle-button">
@@ -76,9 +107,8 @@
         <button id="submit-button-first" class="btn">Submit Data</button>
         <dialog id="confirm-modal" class="modal">
             <div>
-                <h2>An interesting title</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, tempora.</p>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, culpa.</p>
+                <h2>Confirm Submission</h2>
+                <p>Please confirm you want to submit the data.</p>
                 <div>
                     <button id="submit-button-second">Submit</button>
                     <button id="close">Close</button>
@@ -228,5 +258,10 @@
 
         render();
     </script>
+    <footer>
+        <div class="image-container">
+            <img src="file.png" alt="Littleton Soccer Logo">
+        </div>
+    </footer>
 </body>
 </html>
