@@ -31,11 +31,11 @@
         }
 
         .content {
-            flex: 1; /* Take remaining vertical space */
+            flex: 1; 
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start; /* Align content to the top */
+            justify-content: flex-start; 
             padding: 20px;
         }
 
@@ -276,8 +276,69 @@
             let ageGroup = encodeURIComponent(document.getElementById("age-select").value);
             let sessionValue = session ? "1" : "2";
 
-            let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
+            let allPromises = [];
+  const delay = 1000; 
+
+  rows.forEach((player, index) => {
+    let fetchPromise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fetch("https://script.google.com/macros/s/AKfycbzaFHFNkz88WtKNigECnAbo1BpOs9SmMhoc7hr7XnqHYlZ-YkVPmp7sGt_EM6S4AmY/exec", {
+    method: "POST",
+    headers: {
+        'Content-Type': 'text/plain'
+    },
+    body: JSON.stringify({
+        pinnieNumber: player.pinnieNumber || 0,
+        drill_1: player.drill["#1"], 
+        drill_2: player.drill["#2"], 
+        drill_3: player.drill["#3"], 
+        drill_4: player.drill["#4"],
+        drill_5: player.drill["#5"],
+        drill_6: player.drill["#6"],
+        comments: player.comments || "",
+        average: player.average,
+        evalNames: document.getElementById("evaluator-name").value,
+        ageGroup: document.getElementById("age-select").value,
+        sessionNum: sessionValue
+    })
+
+})
+
+        .then(res => {
+          if (!res.ok) {
+            return res.json().then(errorData => {
+              throw new Error(`Error: ${errorData.message || res.statusText}`);
+            });
+          }
+          return res.json();
+        })
+        .then(data => {
+          if (data.result !== 'success') {
+            throw new Error(`Error: ${data.message || 'Unknown error'}`);
+          }
+          console.log('Success:', data);
+          resolve(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          reject(error);
+        });
+      }, index * delay);
+    });
+
+    allPromises.push(fetchPromise);
+  });
+
+  Promise.all(allPromises)
+    .then(responses => {
+        let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
             window.location.assign(url);
+    })
+    .catch(error => {
+      console.log("Error with uploading data to spreadsheet:", error);
+    });
+
+            
         });
 
         dialog.addEventListener("click", (e) => {
