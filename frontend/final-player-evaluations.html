@@ -292,64 +292,35 @@
             }
         }
 
-        submit.addEventListener("click", () => {
-  let allPromises = [];
-  const delay = 1000; // 1 second delay between requests
+       submit.addEventListener('click', () => {
+      const fieldNumber = document.getElementById('field-number').value || 0;
 
-  allPlayers.forEach((player, index) => {
-    let fetchPromise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        fetch("https://script.google.com/macros/s/AKfycbxKRUDxVULNA-FUAGZzXNrYvh6iBMGulDpT9Mx0aDKHOKje2KF_oAWfiij_QkSjtfU/exec", {
-          method: "POST",
-          headers: {
-            'Content-Type': 'text/plain'
-          },
-          body: JSON.stringify({
-            field: document.getElementById("field-number").value || 0,
-            pinnieNumber: player.pinnieNumber,
-            technical: player.stat.technical,
-            tactical: player.stat.tactical,
-            effort: player.stat.effort,
-            comments: player.comments,
-            average: player.average,
-            sessionNum: session,
-            ageGroup: ageGroup, 
-            rank: player.rank,
-          })
+      fetch('http://localhost:5002/submitFE', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          players: allPlayers,
+          fieldNumber: fieldNumber,
+          sessionNum: session,
+          ageGroup: ageGroup,
+          evalNames: evaluatorNames
         })
-        .then(res => {
-          if (!res.ok) {
-            return res.json().then(errorData => {
-              throw new Error(`Error: ${errorData.message || res.statusText}`);
-            });
-          }
-          return res.json();
-        })
-        .then(data => {
-          if (data.result !== 'success') {
-            throw new Error(`Error: ${data.message || 'Unknown error'}`);
-          }
-          console.log('Success:', data);
-          resolve(data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          reject(error);
-        });
-      }, index * delay);
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === 'Data processing started') {
+          window.location.assign('./final-page.html');
+        } else {
+          console.error('Error:', data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
     });
-
-    allPromises.push(fetchPromise);
-  });
-
-  Promise.all(allPromises)
-    .then(responses => {
-      window.location.assign('./final-page.html');
-    })
-    .catch(error => {
-      console.log("Error with uploading data to spreadsheet:", error);
-    });
-});
 
         function playerStats(playerNumber) {
             const index = allPlayers.findIndex(player => player.pinnieNumber === String(playerNumber));
