@@ -142,6 +142,21 @@
             display: block;
             margin-bottom: 10px;
         }
+        #info-button {
+            font-size: 30px;
+            color: navy;
+            
+        }
+        i {
+            color: darkred;
+        }
+        .field-value {
+            border: 2px solid black;
+            width: 40%;
+            margin: auto;
+            padding: 5px;
+            height: 58px;
+        }
 
     </style>
 </head>
@@ -150,11 +165,13 @@
         <h1>Small Sided Group Evaluation
             <i class="fas fa-info-circle" id="info-button"></i>
             <div id="pdf-info" style="display: none">
-                <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="500px">
+                <iframe src="https://drive.google.com/file/d/1-Yt9wWeloJR1Nyl6eY3M0ZLg-me5xhHI/preview" width="100%" height="500px" allow="autoplay"></iframe>
             </div>
         </h1>
-        <labelHead for="field-number"><strong>Enter the Field Number:</strong></labelHead>
+        <div class="field-value">
+        <labelHead for="field-number"><strong> <i class="fa-solid fa-asterisk"></i> Enter the Field Number:</strong></labelHead>
         <input id="field-number" placeholder="Field Number">
+        </div>
         <div class="key-paragraph">
         <h2>Small Sided Game Evaluation</h2>
         <ol>
