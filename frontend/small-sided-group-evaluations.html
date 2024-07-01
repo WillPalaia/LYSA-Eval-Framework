@@ -260,35 +260,36 @@
         }
 
         submit.addEventListener("click", () => {
-            const url = 'https://script.google.com/macros/s/AKfycbyCVPm71Wo9OaLiYgbvHhq3gJFwq1CutkzB5f0J0wKlS5pOT6MDKkQfUa2qHY5D7g/exec';
+            const url = 'http://ec2-54-160-130-107.compute-1.amazonaws.com:5001/';
 
             const data = {
                 players: allPlayers,
                 field: document.getElementById('field-number').value || 10,
                 sessionNum: session || 1,
-                ageGroup: ageGroup || "B34"
+                ageGroup: ageGroup || "B34",
+                evalNames: evaluatorNames
             };
-
-            fetch(url, {
-                method: 'POST',
+            console.log(data);
+            fetch("http://localhost:5002/submitSSE", {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'text/plain',
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(data),
+                body: JSON.stringify(data) 
             })
-            .then(response => response.json())
+            .then(res => res.json())
             .then(data => {
-                console.log('Success:', data);
-                
-                let redirectUrl = `./final-player-evaluations.html?evaluatorNames=${encodeURIComponent(evaluatorNames)}&ageGroup=${encodeURIComponent(ageGroup)}&session=${encodeURIComponent(session)}`;
-                window.location.assign(redirectUrl);
-                
-            
+                console.log(data);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error:', error);
             });
+
+            let redirectUrl = `./final-player-evaluations.html?evaluatorNames=${encodeURIComponent(evaluatorNames)}&ageGroup=${encodeURIComponent(ageGroup)}&session=${encodeURIComponent(session)}`;
+            window.location.assign(redirectUrl);
+            
         });
+
 
         function addPlayers(roundNumber) {
             let input = document.getElementById(`player-numbers-${roundNumber}`).value;

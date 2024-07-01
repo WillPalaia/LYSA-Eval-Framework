@@ -297,10 +297,10 @@
             dialog.close();
         });
 
-        submit.addEventListener("click", () => {
-            let evaluatorNames = encodeURIComponent(document.getElementById("evaluator-name").value);
-            let ageGroup = encodeURIComponent(document.getElementById("age-select").value);
-            let sessionValue = session ? "1" : "2";
+       submit.addEventListener("click", () => {
+    let evaluatorNames = encodeURIComponent(document.getElementById("evaluator-name").value);
+    let ageGroup = encodeURIComponent(document.getElementById("age-select").value);
+    let sessionValue = session ? "1" : "2";
 
             let allPromises = [];
             const delay = 1000; 
@@ -350,17 +350,19 @@
                     }, index * delay);
                 });
 
-                allPromises.push(fetchPromise);
-            });
+    allPromises.push(fetchPromise);
+  });
 
-            Promise.all(allPromises)
-            .then(responses => {
-                let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
-                window.location.assign(url);
-            })
-            .catch(error => {
-                console.log("Error with uploading data to spreadsheet:", error);
-            });
+  Promise.all(allPromises)
+    .then(responses => {
+        let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
+            window.location.assign(url);
+    })
+    .catch(error => {
+      console.log("Error with uploading data to spreadsheet:", error);
+    });
+
+            
         });
 
         dialog.addEventListener("click", (e) => {
