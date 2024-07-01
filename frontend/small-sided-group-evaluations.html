@@ -287,6 +287,7 @@
                 evalNames: evaluatorNames
             };
             console.log(data);
+            /**
             fetch("http://localhost:5002/submitSSE", {
                 method: "POST",
                 headers: {
@@ -301,6 +302,7 @@
             .catch(error => {
                 console.error('Error:', error);
             });
+            */
 
             let redirectUrl = `./final-player-evaluations.html?evaluatorNames=${encodeURIComponent(evaluatorNames)}&ageGroup=${encodeURIComponent(ageGroup)}&session=${encodeURIComponent(session)}`;
             window.location.assign(redirectUrl);

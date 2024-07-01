@@ -354,7 +354,7 @@
 
        submit.addEventListener('click', () => {
       const fieldNumber = document.getElementById('field-number').value || 0;
-
+/**
       fetch('http://localhost:5002/submitFE', {
         method: 'POST',
         headers: {
@@ -377,12 +377,13 @@
           console.error('Error:', data.message);
         }
         Not sure if this line was causing any bugs, worked with it but wasn't sure if neccesary
-*/
+
           
       })
       .catch(error => {
         console.error('Error:', error);
       });
+*/
         window.location.assign('./final-page.html');
 
     });
