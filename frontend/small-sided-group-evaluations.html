@@ -10,121 +10,155 @@
     <link href="styles.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            height: 100%;
+        }
 
-    body {
-        font-family: 'Lato', sans-serif;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-        margin: 0;
-        height: 100%;
-    }
+        .container {
+            flex: 1;
+            margin: 20px;
+        }
 
-    .container {
-        flex: 1;
-        margin: 20px;
-    }
+        .handle {
+            cursor: pointer;
+            background-color: #ccc;
+            padding: 10px;
+        }
 
-    .handle {
-        cursor: pointer;
-        background-color: #ccc;
-        padding: 10px;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        td, th {
+            border: 1px solid black;
+            padding: 10px;
+            vertical-align: middle;
+        }
 
-    td, th {
-        border: 1px solid black;
-        padding: 10px;
-        vertical-align: middle;
-    }
+        .radio-buttons {
+            justify-content: space-around;
+            align-items: center; 
+            height: 100%;
+        }
 
-    .radio-buttons {
-        justify-content: space-around;
-        align-items: center; 
-        height: 100%;
-    }
+        #info-button {
+            cursor: pointer;
+            font-size: 18px;
+        }
 
-    #info-button {
-        cursor: pointer;
-        font-size: 18px;
-    }
+        .present {
+            display: block !important;
+        }
 
-    .present {
-        display: block !important;
-    }
+        #pdf-info {
+            display: none;
+        }
 
-    #pdf-info {
-        display: none;
-    }
+        .add-buttons {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
 
-    .add-buttons {
-        display: flex;
-        align-items: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
+        .add-buttons button {
+            margin-left: 10px; 
+        }
 
-    .add-buttons button {
-        margin-left: 10px; 
-    }
+        table {
+            margin-bottom: 20px;
+            margin-top: 20px;
+        }
 
-    table {
-        margin-bottom: 20px;
-        margin-top: 20px;
-    }
+        #submit-button-first {
+            font-size: 20px;
+            padding: 10px 20px;
+            margin-top: 20px;
+            margin-left: 20px;
+            width: auto;
+        }
 
-    #submit-button-first {
-        font-size: 20px;
-        padding: 10px 20px;
-        margin-top: 20px;
-        margin-left: 20px;
-        width: auto;
-    }
+        .image-container {
+            text-align: center;
+        }
 
-    .image-container {
-        text-align: center;
-    }
+        .image-container img {
+            width: 100%;
+            max-height: 100px;
+            object-fit: contain;
+            background: transparent; 
+        }
 
-    .image-container img {
-        width: 100%;
-        max-height: 100px;
-        object-fit: contain;
-        background: transparent; 
-    }
+        h1 {
+            text-align: center;
+        }
 
-    h1 {
-        text-align: center;
-    }
+        footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px; 
+            flex-shrink: 0;
+        }
 
-    footer {
-        text-align: center;
-        padding: 10px;
-        margin-top: 20px; 
-        flex-shrink: 0;
-    }
+        .comment-input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .key-paragraph {
+            border: 1px solid black;
+            padding: 10px; /* Optional: Add padding for better appearance */
+        }
+        /* Adjustments for centering and margin */
+        #field-number {
+            display: block;
+            margin: 0 auto 20px; /* Center horizontally with bottom margin */
+            width: 10%; /* Adjust width as needed */
+        }
 
+        .key-paragraph {
+            border: 1px solid black;
+            padding: 10px;
+            margin: 20px; /* Add margin around the key paragraph */
+            text-align: left; /* Adjust text alignment */
+        }
 
+        .key-paragraph h2 {
+            text-align: center; /* Center align h2 headings */
+        }
+
+        .key-paragraph ol,
+        .key-paragraph ul {
+            margin: 20px; /* Add margin around ordered and unordered lists */
+            text-align: left; /* Adjust text alignment */
+        }
+        labelHead{
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
 
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Small Sided Group Evaluations</h1>
-        <i class="fas fa-info-circle" id="info-button"></i>
-        <div id="pdf-info" style="display:none;">
-            <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="90%">
-        </div>
-
-        <label for="field-number">Enter the Field Number:</label>
+        <h1>Small Sided Group Evaluation
+            <i class="fas fa-info-circle" id="info-button"></i>
+            <div id="pdf-info" style="display: none">
+                <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="500px">
+            </div>
+        </h1>
+        <labelHead for="field-number"><strong>Enter the Field Number:</strong></labelHead>
         <input id="field-number" placeholder="Field Number">
-
+        <div class="key-paragraph">
         <h2>Small Sided Game Evaluation</h2>
         <ol>
-            <li>Record the pinnie numbers for each player as your field.</li>
+            <li>Record the pinnie numbers for each player on your field.</li>
             <li>During play, make any notes and look to identify top, middle, and bottom performers (based on skill level).</li>
             <li>After 10 minutes, stop play and identify which players move to which field, and make a note.</li>
             <li>Repeat steps 1-3 for subsequent rounds.</li>
@@ -136,6 +170,7 @@
             <li><strong>Effort:</strong> Hustle and persistence</li>
             <li><strong>Attitude:</strong> Coachability, positive behavior, sportsmanship, being a good teammate</li>
         </ul>
+        </div>
         <div id="evaluation-groups"></div>
 
         <button id="submit-button-first" class="btn">Submit Data</button>
@@ -144,6 +179,7 @@
     <dialog id="confirm-modal" class="modal">
         <h2>Confirm Submission</h2>
         <p>Please confirm you want to submit the data.</p>
+        <p><strong>WARNING: FIELD NUMBER NEEDS TO BE FILLED IN</strong></p>
         <div>
             <button id="submit-button-second">Submit</button>
             <button id="close">Close</button>
@@ -181,8 +217,6 @@
         close.addEventListener("click", () => {
             dialog.close();
         });
-
-        
 
         dialog.addEventListener("click", (e) => {
             const dimensions = dialog.getBoundingClientRect();
@@ -224,7 +258,6 @@
             document.getElementById("evaluation-groups").appendChild(groupContainer);
             currentRound++;
         }
-
 
         submit.addEventListener("click", () => {
             const url = 'https://script.google.com/macros/s/AKfycbyCVPm71Wo9OaLiYgbvHhq3gJFwq1CutkzB5f0J0wKlS5pOT6MDKkQfUa2qHY5D7g/exec';
@@ -302,7 +335,7 @@
                                 </label>
                             </div>
                         </td>
-                        <td><input type="text" value="${player.comments}" oninput="updateComments(${roundNumber}, '${player.pinnieNumber}', this.value)"></td>
+                        <td><input type="text" value="${player.comments}" class="comment-input" oninput="updateComments(${roundNumber}, '${player.pinnieNumber}', this.value)"></td>
                     </tr>
                 `;
             });

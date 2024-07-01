@@ -20,7 +20,7 @@
             align-items: center;
         }
         .slider-value {
-            margin-left: 10px;
+            margin-left: 5px;
         }
         .handle {
             cursor: move;
@@ -32,14 +32,14 @@
             margin-right: 0px;
         }
         #ranking-table {
-            width: 15%;
+            width: 10%;
         }
         th, td {
             height: 40px; 
             text-align: center;
         }
         #technical-evaluation-table {
-            width: 85%;
+            width: 90%;
         }
 
         .image-container {
@@ -83,25 +83,65 @@
             margin-top: 20px; /* Ensure gap between content and footer */
             flex-shrink: 0;
         }
+        #field-number {
+            display: block;
+            margin: 0 auto 10px; /* Center horizontally with bottom margin */
+            width: 10%; /* Adjust width as needed */
+        }
+        .comment-input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .key-paragraph {
+            border: 1px solid black;
+            padding: 10px;
+            margin: 20px; /* Add margin around the key paragraph */
+            text-align: left; /* Adjust text alignment */
+        }
 
+        .key-paragraph h2 {
+            text-align: center; /* Center align h2 headings */
+        }
+
+        .key-paragraph ol {
+            margin: 20px; /* Add margin around ordered and unordered lists */
+            text-align: left; /* Adjust text alignment */
+        }
+        
+        .content {
+            flex: 1; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start; 
+            padding: 20px;
+        }
+        labelHead{
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
-    <h1>Final Player Evaluation</h1>
-    <i class="fas fa-info-circle" id="info-button"></i>
-    <div id="pdf-info" style="display:none">
-        <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="90%">
-    </div>
     <div class="container">
-        <label for="field-number">
-            Enter the Field Number:
-            <input name="field-number" id="field-number" placeholder="Field Number">
-        </label>
-        <p><strong>Key: Score based on Scale of 1 to 10</strong>
-            <br>10 = Highest Score (executes skills at highest level and consistently)
-            <br>1 = Lowest Score (executes skills at low level and inconsistently or unable)
-            <br>Note: The average will be calculated for you manually! Don't worry about calculating it!
-        </p>
+        <h1>Final Player Evaluation
+            <i class="fas fa-info-circle" id="info-button"></i>
+            <div id="pdf-info" style="display: none">
+                <embed src="https://www.clickdimensions.com/links/TestPDFfile.pdf" type="application/pdf" width="100%" height="500px">
+            </div>
+        </h1>
+        <labelHead for="field-number"><strong>Enter the Field Number:</strong></labelHead>
+        <input id="field-number" placeholder="Field Number">
+        <div class="key-paragraph">
+            <h2>Final Player Evaluation</h2>
+            <ol>
+                <li>Record the pinnie numbers for each player on your field.</li>
+                <li>After all play is done, give final rankings based on technical, tactical, and overall skill.</li>
+                <li>Add note on each player.</li>
+                <li>Use the handle bars to rank players to your liking.</li>
+            </ol>
+        </div>
         <label for="player-numbers">Add all player numbers, separated by commas:</label>
         <input type="text" id="player-numbers" name="player-numbers" placeholder="Add all player numbers, separated by commas">
         <button id="add-players-button">Add Players</button>
@@ -109,7 +149,7 @@
             <table id="ranking-table">
                 <thead>
                     <tr>
-                        <th>Ranking</th>
+                        <th>Ranking (Fixed)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -138,6 +178,7 @@
             <div>
                 <h2>Confirm Submission</h2>
                 <p>Please confirm you want to submit the data.</p>
+                <p><strong>WARNING: FIELD NUMBER NEEDS TO BE FILLED IN</strong></p>
                 <div>
                     <button id="submit-button-second">Submit</button>
                     <button id="close">Close</button>
@@ -232,7 +273,7 @@
                         <td id="player-${player.pinnieNumber}-td">${player.pinnieNumber}</td>
                         ${playerStats(player.pinnieNumber)}
                         <td id="player-${player.pinnieNumber}-comments-td">
-                            <input type="text" id="comments-${player.pinnieNumber}" value="${player.comments}" onchange="updateComments('${player.pinnieNumber}')">
+                            <input type="text" id="comments-${player.pinnieNumber}" value="${player.comments}" class="comment-input" onchange="updateComments('${player.pinnieNumber}')">
                         </td>
                         <td id="player-${player.pinnieNumber}-average">
                             ${player.average.toFixed(2)}

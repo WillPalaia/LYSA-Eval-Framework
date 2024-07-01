@@ -46,13 +46,14 @@
         }
 
         .header {
-            background-color: blue;
+            background-color: rgb(3, 3, 59);
             padding: 20px;
+            background: rgba(3, 3, 59, 0.9); /* Semi-transparent background for readability */
         }
 
         .header h2 {
             margin: 0;
-            color: yellow;
+            color: rgba(235, 235, 0, 0.815);
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; /* Black outline */
             padding: 10px;
         }
@@ -68,7 +69,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 20px; /* Added space between icon and text */
-            background: rgba(255, 255, 255, 0.8); /* Semi-transparent background for readability */
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent background for readability */
             padding: 10px;
             border-radius: 5px;
         }
@@ -94,9 +95,9 @@
 
         #start {
             font-size: 20px;
-            padding: 10px 20px;
             margin-top: 20px;
             width: auto; /* Ensure button does not stretch */
+            background: rgba(3, 3, 59, 0.9);
         }
 
         footer {
@@ -125,7 +126,7 @@
             <h2>Littleton Youth Soccer Evaluation Form</h2>
             <i id="info-button"></i>
         </header>
-        <button id="start">Start Evaluation</button>
+        <button id="start"><header class="header"><h2>Start Evaluation</h2></header></button>
         <script>
             let info = document.getElementById("info-button");
             let pdf = document.getElementById("pdf-info");
