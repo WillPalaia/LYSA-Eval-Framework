@@ -371,11 +371,14 @@
 
                 allPromises.push(fetchPromise);
             });
-
+            let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
+                window.location.assign(url);
             Promise.all(allPromises)
             .then(responses => {
+                /**
                 let url = `./small-sided-group-evaluations.html?evaluatorNames=${evaluatorNames}&ageGroup=${ageGroup}&session=${sessionValue}`;
                 window.location.assign(url);
+                */
             })
             .catch(error => {
                 console.log("Error with uploading data to spreadsheet:", error);
