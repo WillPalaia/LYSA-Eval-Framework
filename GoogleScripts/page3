@@ -1,0 +1,58 @@
+function doPost(e) {
+  let response;
+
+  try {
+    // Parse the incoming POST data
+    let data = JSON.parse(e.postData.contents);
+
+    // Mapping of age groups to their respective Google Sheets URLs
+    const spreadsheetMapping = {
+/**
+Taken out for privacy issues
+*/
+    };
+
+    // Retrieve the URL of the spreadsheet for the given age group
+    const spreadsheetUrl = spreadsheetMapping[data.ageGroup];
+    if (!spreadsheetUrl) {
+      throw new Error("Invalid age group provided.");
+    }
+
+    // Open the spreadsheet
+    const sheets = SpreadsheetApp.openByUrl(spreadsheetUrl);
+    const suffix = "FE";  // Suffix for the sheet name
+    const sheetName = `Session${data.sessionNum}-${suffix}`;
+    const sheet = sheets.getSheetByName(sheetName);
+    if (!sheet) {
+      throw new Error(`Sheet ${sheetName} not found.`);
+    }
+
+    // Log the incoming data for debugging purposes
+    Logger.log(data);
+
+    // Append a new row to the sheet with the data
+    sheet.appendRow([
+      data.field,
+      data.pinnieNumber,
+      data.rank,
+      data.technical,
+      data.tactical,
+      data.effort,
+      data.comments,
+      data.average
+    ]);
+
+    // Prepare the success response
+    let responseObject = { result: 'success', data: data.pinnieNumber };
+    let jsonString = JSON.stringify(responseObject);
+    response = ContentService.createTextOutput(jsonString).setMimeType(ContentService.MimeType.JSON);
+  } catch (error) {
+    // Prepare the error response
+    let errorObject = { result: 'error', message: error.message };
+    let errorJsonString = JSON.stringify(errorObject);
+
+    response = ContentService.createTextOutput(errorJsonString).setMimeType(ContentService.MimeType.JSON); 
+  }
+
+  return response;
+}
